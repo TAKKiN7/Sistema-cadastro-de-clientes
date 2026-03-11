@@ -36,7 +36,7 @@ class ClientesView(Treeview):
     def layout(self):   
         self.inserir_clientes()
 
-        self.place(relx=.02, rely=0.02, relheight=.9, relwidth=.96) 
+        self.place(relx=.02, rely=0.05, relheight=.9, relwidth=.96) 
 
 
 
