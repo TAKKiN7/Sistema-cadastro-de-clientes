@@ -1,6 +1,5 @@
 from customtkinter import *
-from Interface.ClientesFrame import ClientesFrame
-from Interface.ClientesFrame.ClientesView import ClientesView
+from Interface.ClientesView import ClientesView
 
 class Janela(CTk):
     def __init__(self):
@@ -20,7 +19,6 @@ class Janela(CTk):
     def layout(self):
         tabela_clientes : ClientesView = ClientesView(self)
 
-        #clientesF : CTkFrame = ClientesFrame(self)
 
     
     def run(self):

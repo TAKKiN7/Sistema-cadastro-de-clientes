@@ -41,5 +41,3 @@ banco : Banco = Banco()
 # Inicializar a janela de interface Grafica
 
 janela : Janela = Janela()
-
-
