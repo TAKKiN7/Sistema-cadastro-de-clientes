@@ -11,10 +11,10 @@ class Banco:
         try:
             local : Path = Path.cwd()
             banco : Path = Path("BancoDeDados")
-            banco.touch(exist_ok=True)
+            banco.mkdir(exist_ok=True)
 
             self.caminho : Path = Path(local / banco)
-            self.caminho.touch(exist_ok=True)
+            self.caminho.mkdir(exist_ok=True)
         finally:
             with sqlite3.connect(self.caminho / "db.db") as conn:
                 cursor : sqlite3.Cursor = conn.cursor()

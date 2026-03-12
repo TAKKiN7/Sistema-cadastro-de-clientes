@@ -101,12 +101,17 @@ class Janela(CTk):
         if not selecionado:
             msg.showinfo("Error", "Nenhum cadastro selecionado")
             return
-        valores = self.tabela_clientes.item(selecionado[0])
-        id = valores.get("text")
+        
+        for c in range(len(selecionado)):
+            valores = self.tabela_clientes.item(selecionado[c])
+            id = valores.get("text")
 
-        self.banco.deletar_cliente(id)
+            self.banco.deletar_cliente(id)
 
-        msg.showinfo("Feito", f"Cliente removido com sucesso.")
+        if len(selecionado) > 1:
+            msg.showinfo("Feito", f"Clientes removidos com sucesso.")
+        else:
+            msg.showinfo("Feito", f"Cliente removido com sucesso.")
         self.tabela_clientes.selection_remove(self.tabela_clientes.selection())
         self.atualizar_tabela_clientes()
 

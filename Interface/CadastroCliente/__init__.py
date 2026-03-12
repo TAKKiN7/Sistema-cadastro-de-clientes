@@ -6,8 +6,8 @@ class CadastroCliente(CTkToplevel):
     def __init__(self, master):
         super().__init__(master)
         self.config()
-        self.focar()
-    
+        self.focar() # para uso no Linux
+        #self.grab_set() Para uso no windows
 
     def config(self):
         self.title("Novo Cadastro")
@@ -25,7 +25,6 @@ class CadastroCliente(CTkToplevel):
     def focar(self):
         self.after(10, self.grab_set)
         self.focus()
-    
 
 
     def layout(self):
