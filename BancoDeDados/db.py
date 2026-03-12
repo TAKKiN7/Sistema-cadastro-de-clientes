@@ -29,6 +29,14 @@ class Banco:
             conn.commit()
     
 
+    def deletar_cliente(self, id):
+        with sqlite3.connect(self.caminho / "db.db") as conn:
+            conn.row_factory = sqlite3.Row
+            cursor : sqlite3.Cursor = conn.cursor()
+            cursor.execute("DELETE FROM clientes WHERE id = ?", (id, ))
+            conn.commit()
+
+
     def buscar_cliente_id(self, id):
         with sqlite3.connect(self.caminho / "db.db") as conn:
             conn.row_factory = sqlite3.Row

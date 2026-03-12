@@ -15,10 +15,10 @@ class ClientesView(Treeview):
 
         self.column("#0", width=50, stretch=False)
         self.column("nome")
-        self.column("telefone", width=200, stretch=False)
+        self.column("telefone")
         self.column("email")
         self.column("endereco")
-        self.column("status", stretch=False, width=100, anchor="center")
+        self.column("status", stretch=True, width=100, anchor="center")
 
         self.heading("#0", text="ID", anchor="center") 
         self.heading("nome", text="Nome") 
@@ -36,7 +36,7 @@ class ClientesView(Treeview):
     def layout(self):   
         self.inserir_clientes()
 
-        self.place(relx=.02, rely=0.05, relheight=.9, relwidth=.96) 
+        self.place(relx=.02, rely=0.07, relheight=.9, relwidth=.96) 
 
 
 
@@ -65,7 +65,7 @@ class ClientesView(Treeview):
 
     def estilo(self):
         style : Style = Style()
-        style.configure("Treeview.Heading", font=("Verdana", 15))
+        style.configure("Treeview.Heading", font=("Verdana", 15, "bold"))
 
         # No linux para esses emojis "🔴 🟢 🟡" aparecer tem que deixar essa font= "Noto Color Emoji"
         style.configure("Treeview", font=("Verdana", 13), rowheight=30)
