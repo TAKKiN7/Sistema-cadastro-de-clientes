@@ -1,11 +1,11 @@
 from tkinter.ttk import Treeview, Style
-from BancoDeDados.db import Banco
+from services.Clientes_services import ClienteServices
 
 
 class ClientesView(Treeview):
     def __init__(self, master):
         super().__init__(master)
-        self.banco : Banco = Banco()
+        self.cliente_services : ClienteServices = ClienteServices()
         self.config_tree()
         self.layout()
     
@@ -41,8 +41,8 @@ class ClientesView(Treeview):
 
 
     def inserir_clientes(self):
-        clientes = self.banco.listar_clientes()
-        if clientes == "Nenhum cliente encontrado":
+        clientes = self.cliente_services.listar_clientes()
+        if not clientes:
             return
         for i, c in enumerate(clientes):
             cliente : dict = dict(c)

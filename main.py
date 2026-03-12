@@ -1,10 +1,5 @@
-from BancoDeDados.db import Banco
-from models.Cliente import Cliente
 from Interface import Janela
-
-
-# Criação da conexão com o banco de dados
-banco : Banco = Banco()
+from models.Cliente import Cliente
 
 
 # Criação de um obj clientes com as informações reais do cliente
@@ -40,4 +35,4 @@ banco : Banco = Banco()
 
 # Inicializar a janela de interface Grafica
 
-janela : Janela = Janela(banco=banco)
+janela : Janela = Janela()

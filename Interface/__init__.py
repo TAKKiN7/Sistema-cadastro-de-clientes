@@ -1,15 +1,14 @@
 from customtkinter import *
 from Interface.ClientesView import ClientesView
 from tkinter import messagebox as msg
-from BancoDeDados.db import Banco
+from services.Clientes_services import ClienteServices
 from Interface.CadastroCliente import CadastroCliente
 
 
 class Janela(CTk):
-    def __init__(self, banco : Banco):
+    def __init__(self):
         super().__init__()
-
-        self.banco : Banco = banco
+        self.cliente_services : ClienteServices = ClienteServices()
         self.config()
         self.layout() 
         self.run()
@@ -106,7 +105,7 @@ class Janela(CTk):
             valores = self.tabela_clientes.item(selecionado[c])
             id = valores.get("text")
 
-            self.banco.deletar_cliente(id)
+            self.cliente_services.excluir(id)
 
         if len(selecionado) > 1:
             msg.showinfo("Feito", f"Clientes removidos com sucesso.")
