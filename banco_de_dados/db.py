@@ -18,8 +18,8 @@ class Banco:
 
 
     def banco_conn(self):
-        db = "db.db"
-        conn : sqlite3.Connection = sqlite3.connect(self.caminho / db)
+        self.db = self.caminho / "db.db"
+        conn : sqlite3.Connection = sqlite3.connect(self.db)
         conn.row_factory = sqlite3.Row
         return conn
     
@@ -34,7 +34,6 @@ class Banco:
 
     def deletar_cliente(self, id):
         with self.banco_conn() as conn:
-            conn.row_factory = sqlite3.Row
             cursor : sqlite3.Cursor = conn.cursor()
             cursor.execute("DELETE FROM clientes WHERE id = ?", (id, ))
             conn.commit()
@@ -42,7 +41,6 @@ class Banco:
 
     def buscar_cliente_id(self, id):
         with self.banco_conn() as conn:
-            conn.row_factory = sqlite3.Row
             cursor : sqlite3.Cursor = conn.cursor()
             cursor.execute("SELECT * FROM clientes WHERE id = ?", (id, ))
             info = cursor.fetchone()
@@ -61,8 +59,8 @@ class Banco:
 
             try:
                 cliente : Cliente = Cliente(nome=nome, telefone=telefone, email=email, endereco=endereco, id=id, status=status)
-            except:
-                return "Erro ao tentar construir o obj cliente"
+            except Exception as e:
+                return f"Erro ao tentar construir o obj cliente. Erro: {e}"
             else:
                 return cliente
 
@@ -72,6 +70,7 @@ class Banco:
         with self.banco_conn() as conn:
             cursor : sqlite3.Cursor = conn.cursor()
             cursor.execute("UPDATE clientes SET status = ? WHERE id = ?", data)
+            conn.commit()
 
 
     def ativar_cliente(self, id : int):
@@ -79,7 +78,7 @@ class Banco:
         with self.banco_conn() as conn:
             cursor : sqlite3.Cursor = conn.cursor()
             cursor.execute("UPDATE clientes SET status = ? WHERE id = ?", data)
-
+            conn.commit()
 
 
     def alterar_nome(self, id : int ,novo_nome : str):
@@ -93,7 +92,6 @@ class Banco:
     
     def listar_clientes(self) -> dict | str:
         with self.banco_conn() as conn:
-            conn.row_factory = sqlite3.Row
             cursor : sqlite3.Cursor = conn.cursor()
             cursor.execute("SELECT * FROM clientes")
             res = cursor.fetchall()
