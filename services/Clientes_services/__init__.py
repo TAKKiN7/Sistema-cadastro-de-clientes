@@ -1,4 +1,5 @@
 from banco_de_dados.db import Banco
+from models.Cliente import Cliente
 
 
 class ClienteServices:
@@ -12,3 +13,7 @@ class ClienteServices:
 
     def listar_clientes(self):
         return self.banco.listar_clientes()
+
+
+    def cadastrar_cliente(self, cliente : Cliente):
+        self.banco.cadastrar_cliente(cliente=cliente)

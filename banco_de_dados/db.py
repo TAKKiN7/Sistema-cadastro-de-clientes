@@ -96,7 +96,7 @@ class Banco:
             cursor.execute("SELECT * FROM clientes")
             res = cursor.fetchall()
             if not res:
-                return "Nenhum cliente encontrado"
+                return None
             
             return res
 

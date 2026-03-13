@@ -85,7 +85,7 @@ class Janela(CTk):
 
     def adicionar(self):
         # msg.showinfo("Adicionar", "Adicionado com sucesso")
-        janela_novo_cadastro : CadastroCliente = CadastroCliente(self)
+        janela_novo_cadastro : CadastroCliente = CadastroCliente(self, fun_atualizar_tabela=self.atualizar_tabela_clientes)
 
     
     def editar(self):
@@ -101,11 +101,18 @@ class Janela(CTk):
             msg.showinfo("Error", "Nenhum cadastro selecionado")
             return
         
-        for c in range(len(selecionado)):
-            valores = self.tabela_clientes.item(selecionado[c])
-            id = valores.get("text")
+        valores = self.tabela_clientes.item(selecionado[0])
+        
+        nome : str = valores.get("values")[0]
 
-            self.cliente_services.excluir(id)
+        res = msg.askyesno("Confirme", f"Excluir {nome}")
+        if not res:
+            return
+        
+        
+        id = valores.get("text")
+
+        self.cliente_services.excluir(id)
 
         if len(selecionado) > 1:
             msg.showinfo("Feito", f"Clientes removidos com sucesso.")
