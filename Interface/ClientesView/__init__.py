@@ -52,9 +52,9 @@ class ClientesView(Treeview):
 
             ativo = cliente.get("status").lower() == "ativo"
             if not ativo:
-                valores : tuple = (cliente.get("nome"), cliente.get("telefone"), cliente.get("email"), cliente.get("endereco"), f"🔴")
+                valores : tuple = (cliente.get("nome"), cliente.get("telefone"), cliente.get("email"), cliente.get("endereco"), f"INATIVO")
             else:   
-                valores : tuple = (cliente.get("nome"), cliente.get("telefone"), cliente.get("email"), cliente.get("endereco"), f"🔵") # caso for necessario um status pendente 🔶
+                valores : tuple = (cliente.get("nome"), cliente.get("telefone"), cliente.get("email"), cliente.get("endereco"), f"ATIVO")
 
 
             if i % 2 == 0:

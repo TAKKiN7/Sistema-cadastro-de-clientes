@@ -17,3 +17,11 @@ class ClienteServices:
 
     def cadastrar_cliente(self, cliente : Cliente):
         self.banco.cadastrar_cliente(cliente=cliente)
+    
+
+    def buscar_cliente(self, id):
+        return self.banco.buscar_cliente_id(id)
+    
+
+    def atualizar_cliente(self, id, cliente_atualizado : Cliente):
+        self.banco.atualizar_cadastro(id, cliente_atualizado)

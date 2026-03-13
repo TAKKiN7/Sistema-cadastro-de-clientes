@@ -88,6 +88,13 @@ class Banco:
             cursor.execute("UPDATE clientes SET nome = ? WHERE id = ?", data)
             conn.commit()
 
+    
+    def atualizar_cadastro(self, id, cliente_atualizado : Cliente):
+        dados : tuple = (cliente_atualizado.nome, cliente_atualizado.telefone, cliente_atualizado.email, cliente_atualizado.endereco, id)
+        with self.banco_conn() as conn:
+            cursor : sqlite3.Cursor = conn.cursor()
+            cursor.execute("UPDATE clientes SET nome = ?, telefone = ?, email = ?, endereco = ? WHERE id = ?", (dados))
+            conn.commit()
 
     
     def listar_clientes(self) -> dict | str:

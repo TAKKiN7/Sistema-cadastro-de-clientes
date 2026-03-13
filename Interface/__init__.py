@@ -3,6 +3,8 @@ from Interface.ClientesView import ClientesView
 from tkinter import messagebox as msg
 from services.Clientes_services import ClienteServices
 from Interface.CadastroCliente import CadastroCliente
+from models.Cliente import Cliente
+from Interface.EditarCliente import EditarCliente
 
 
 class Janela(CTk):
@@ -93,7 +95,17 @@ class Janela(CTk):
         if not selecionado:
             msg.showinfo("Error", "Nenhum cadastro selecionado")
             return
-        self.tabela_clientes.selection_remove(self.tabela_clientes.selection())
+        
+
+        id = self.tabela_clientes.item(selecionado[0]).get("text")
+
+        print(id)
+
+        cliente : Cliente = self.cliente_services.buscar_cliente(id)
+
+        janela_editar_cliente : EditarCliente = EditarCliente(self, cliente=cliente, fun_atualizar_tabela=self.atualizar_tabela_clientes)
+
+        #self.tabela_clientes.selection_remove(self.tabela_clientes.selection())
 
     def remover(self):
         selecionado = self.tabela_clientes.selection()

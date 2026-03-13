@@ -1,20 +1,21 @@
 from customtkinter import CTkToplevel, CTkButton, CTkLabel, CTkEntry
-from tkinter import messagebox as msg
 from models.Cliente import Cliente
-from services.Clientes_services import ClienteServices
+from tkinter import messagebox as msg
 import re
+from services.Clientes_services import ClienteServices
 
-
-class CadastroCliente(CTkToplevel):
-    def __init__(self, master, fun_atualizar_tabela):
-        super().__init__(master)
-        self.service_cliente : ClienteServices = ClienteServices()
+class EditarCliente(CTkToplevel):
+    def __init__(self, master, cliente : Cliente, fun_atualizar_tabela):
+        super().__init__(master, fg_color="RED")
+        self.cliente : Cliente = cliente
+        self.services : ClienteServices = ClienteServices()
         self.fun_atualizar_tabela = fun_atualizar_tabela
         self.config()
         self.layout()
         self.focar() # para uso no Linux
         #self.grab_set() Para uso no windows
 
+    
     def config(self):
 
         self.configure(fg_color="#aaa")
@@ -28,13 +29,6 @@ class CadastroCliente(CTkToplevel):
         self.geometry(f"{largura_janela}x{altura_janela}+{int((largura_tela / 2 ) - (largura_janela / 2))}+{int((altura_tela / 2) - (altura_janela / 2))}")
         self.maxsize(800, 300)
         self.minsize(800, 300)
-
-
-    def focar(self):
-        self.after(10, self.grab_set)
-        self.focus()
-
-
     def layout(self):
 
         nomeL : CTkLabel = CTkLabel(self, text="Nome:", fg_color="#aaa", corner_radius=0, bg_color="#aaa", text_color="BLACK")
@@ -47,6 +41,11 @@ class CadastroCliente(CTkToplevel):
         self.emailE : CTkEntry = CTkEntry(self, fg_color="#ccc", text_color="BLACK", font=("arial", 13))
         self.enderecoE : CTkEntry = CTkEntry(self, fg_color="#ccc", text_color="BLACK", font=("arial", 13))
 
+
+        self.nomeE.insert(0, self.cliente.nome)
+        self.telefoneE.insert(0, self.cliente.telefone)
+        self.emailE.insert(0, self.cliente.email)
+        self.enderecoE.insert(0, self.cliente.endereco)
 
         self.nomeE.bind("<Return>", lambda event: self.confirmar())
         self.telefoneE.bind("<Return>", lambda event: self.confirmar())
@@ -85,7 +84,8 @@ class CadastroCliente(CTkToplevel):
         cancelar_button.place(relx=.2, rely=.8)
         confirmar_button.place(relx=.5, rely=.8)
 
-    
+
+
     def enter_mouse(self, button : CTkButton, e=None):
         button.configure(fg_color="#999", text_color="WHITE", hover_color="#999")
 
@@ -94,19 +94,22 @@ class CadastroCliente(CTkToplevel):
         button.configure(fg_color="#ccc", text_color="BLACK", hover_color="#ccc")
 
 
-    def confirmar(self, event=None):
+    def focar(self):
+        self.after(10, self.grab_set)
+        self.focus()
+
+
+    def confirmar(self):
         dados : dict = self.leitura_de_dados()
         if not dados:
             return
-    
-        cliente : Cliente = Cliente(dados.get("nome"), dados.get("telefone"), dados.get("email"), dados.get("endereco"))      
-        
-        self.service_cliente.cadastrar_cliente(cliente=cliente)
-        
+        cliente_atualizado : Cliente = Cliente(dados.get("nome"), dados.get("telefone"), dados.get("email"), dados.get("endereco"))
+        self.services.atualizar_cliente(self.cliente.id, cliente_atualizado)
+
         self.fun_atualizar_tabela()
         self.fechar()
 
-
+    
     def leitura_de_dados(self):
         if not self.nomeE.get().strip():
             msg.showerror("Campo incorreto", "*Nome* Campo obrigatorio esta Vazio")
@@ -137,8 +140,6 @@ class CadastroCliente(CTkToplevel):
         }
 
         return dados
-
-
     
 
     def validar_email(self, email: str) -> bool:
@@ -149,11 +150,8 @@ class CadastroCliente(CTkToplevel):
         padrao = r"^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$"
         return re.match(padrao, telefone) is not None
 
-
-        
     def cancelar(self):
         self.fechar()
-
 
     def fechar(self):
         self.destroy()
