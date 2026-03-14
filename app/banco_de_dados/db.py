@@ -1,6 +1,6 @@
 import sqlite3
 from pathlib import Path
-from models.Cliente import Cliente
+from app.models.Cliente import Cliente
 
 class Banco:
     def __init__(self):
@@ -9,7 +9,7 @@ class Banco:
 
     def criar_banco(self):
         try:
-            self.caminho : Path = Path.cwd() / "banco_de_dados"
+            self.caminho : Path = Path.cwd() / "app/banco_de_dados"
             self.caminho.mkdir(exist_ok=True)
         finally:
             with self.banco_conn() as conn:
@@ -63,7 +63,34 @@ class Banco:
                 return f"Erro ao tentar construir o obj cliente. Erro: {e}"
             else:
                 return cliente
+            
+    def buscar_cliente_nome(self, nome):
 
+        clientes : list[Cliente] = []
+
+        res = self.listar_clientes()
+        if not res:
+            return
+        
+        for c in res:
+            cliente : dict = dict(c)
+            if nome.lower() in cliente.get("nome").lower():
+                clientes.append(cliente)
+
+        return clientes
+        
+    
+    def buscar_cliente_email(self, email):
+        with self.banco_conn() as conn:
+            cursor : sqlite3.Cursor = conn.cursor()
+            cursor.execute("SELECT * FROM clientes WHERE email = ?", (email, ))
+            info = cursor.fetchone()
+
+            if not info:
+                return
+
+            return info
+        
 
     def desativar_cliente(self, id : int):
         data : tuple = ("INATIVO", id)

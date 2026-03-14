@@ -1,7 +1,7 @@
 from customtkinter import CTkToplevel, CTkButton, CTkLabel, CTkEntry
 from tkinter import messagebox as msg
-from models.Cliente import Cliente
-from services.Clientes_services import ClienteServices
+from app.models.Cliente import Cliente
+from app.services.Clientes_services import ClienteServices
 import re
 
 
@@ -123,6 +123,11 @@ class CadastroCliente(CTkToplevel):
         
         if not self.validar_email(self.emailE.get().strip().lower()):
             msg.showerror("Erro", "Email invalido")
+            return
+
+        cliente = self.service_cliente.buscar_cliente_email(self.emailE.get().strip().lower())
+        if cliente:
+            msg.showerror("Erro", "Email ja cadastrado para outro cliente")
             return
 
         if not self.validar_telefone(self.telefoneE.get().lower().strip()):

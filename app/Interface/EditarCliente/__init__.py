@@ -1,8 +1,8 @@
 from customtkinter import CTkToplevel, CTkButton, CTkLabel, CTkEntry
-from models.Cliente import Cliente
+from app.models.Cliente import Cliente
 from tkinter import messagebox as msg
 import re
-from services.Clientes_services import ClienteServices
+from app.services.Clientes_services import ClienteServices
 
 class EditarCliente(CTkToplevel):
     def __init__(self, master, cliente : Cliente, fun_atualizar_tabela):

@@ -1,10 +1,10 @@
 from customtkinter import *
-from Interface.ClientesView import ClientesView
+from app.Interface.ClientesView import ClientesView
 from tkinter import messagebox as msg
-from services.Clientes_services import ClienteServices
-from Interface.CadastroCliente import CadastroCliente
-from models.Cliente import Cliente
-from Interface.EditarCliente import EditarCliente
+from app.services.Clientes_services import ClienteServices
+from app.Interface.CadastroCliente import CadastroCliente
+from app.models.Cliente import Cliente
+from app.Interface.EditarCliente import EditarCliente
 
 
 class Janela(CTk):
