@@ -24,7 +24,7 @@ class Janela(CTk):
 
     def layout(self):
         self.frame_fundo()
-        self.tabela_clientes : ClientesView = ClientesView(self)
+        self.tabela_clientes : ClientesView = ClientesView(self, fun_duplo_clique=self.editar)
         self.botoes_acao()
 
 
@@ -90,7 +90,7 @@ class Janela(CTk):
         janela_novo_cadastro : CadastroCliente = CadastroCliente(self, fun_atualizar_tabela=self.atualizar_tabela_clientes)
 
     
-    def editar(self):
+    def editar(self, event=None):
         selecionado = self.tabela_clientes.selection()
         if not selecionado:
             msg.showinfo("Error", "Nenhum cadastro selecionado")

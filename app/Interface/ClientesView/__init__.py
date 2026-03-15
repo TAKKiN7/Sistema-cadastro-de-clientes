@@ -1,11 +1,15 @@
 from tkinter.ttk import Treeview, Style
 from app.services.Clientes_services import ClienteServices
+from tkinter import messagebox as msg
+from app.Interface.EditarCliente import EditarCliente
+from app.models.Cliente import Cliente
 
 
 class ClientesView(Treeview):
-    def __init__(self, master, filter : bool = False, nome : str = None, id : int = None, email : str = None):
+    def __init__(self, master, fun_duplo_clique = None, filter : bool = False, nome : str = None, id : int = None, email : str = None):
         super().__init__(master)
         self.cliente_services : ClienteServices = ClienteServices()
+        self.duplo_clique = fun_duplo_clique
         self.nome = nome.title() if nome else None
         self.id = id
         self.email = email.lower() if email else None
@@ -48,6 +52,7 @@ class ClientesView(Treeview):
             self.inserir_clientes_email(self.email)
 
 
+        self.bind("<Double-1>", self.duplo_clique)
         self.place(relx=.02, rely=0.07, relheight=.9, relwidth=.96) 
 
 
@@ -140,3 +145,5 @@ class ClientesView(Treeview):
 
         # No linux para esses emojis "🔴 🟢 🟡" aparecer tem que deixar essa font= "Noto Color Emoji"
         style.configure("Treeview", font=("Verdana", 13), rowheight=30)
+
+
