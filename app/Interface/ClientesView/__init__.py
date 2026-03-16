@@ -42,14 +42,12 @@ class ClientesView(Treeview):
         if not self.filter:
             self.inserir_clientes()
         elif self.nome:
-            print("TO NO nome")
             self.inserir_clientes_nome(self.nome)
         elif self.id:
-            print("TO NO ID")
             self.inserir_clientes_id(self.id)
         elif self.email:
-            print("TO NO email")
             self.inserir_clientes_email(self.email)
+
 
         self.bind("<Double-1>", self.duplo_clique)
         self.place(relx=.02, rely=0.07, relheight=.9, relwidth=.96) 
@@ -146,3 +144,5 @@ class ClientesView(Treeview):
 
         # No linux para esses emojis "🔴 🟢 🟡" aparecer tem que deixar essa font= "Noto Color Emoji"
         style.configure("Treeview", font=("Verdana", 13), rowheight=30)
+
+

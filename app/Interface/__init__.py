@@ -111,6 +111,7 @@ class Janela(CTk):
         janela_novo_cadastro : CadastroCliente = CadastroCliente(self, fun_atualizar_tabela=self.atualizar_tabela_clientes)
 
     
+
     def editar(self, e=None):
         selecionado = self.tabela_clientes.selection()
         if not selecionado:
