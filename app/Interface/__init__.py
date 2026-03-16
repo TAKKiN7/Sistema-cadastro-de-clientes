@@ -24,7 +24,7 @@ class Janela(CTk):
 
     def layout(self):
         self.frame_fundo()
-        self.tabela_clientes : ClientesView = ClientesView(self)
+        self.tabela_clientes : ClientesView = ClientesView(self, fun_duplo_clique=self.editar)
         self.botoes_acao()
 
 
@@ -33,12 +33,14 @@ class Janela(CTk):
         tamanho_tela : int = self.winfo_screenheight()
         print(tamanho_tela)
         if tamanho_tela == 1080:
-            tamanho_letra = 11
+            tamanho_letra = 12
             tamanho_letra_fechar = 15
         else:
             tamanho_letra = 17
             tamanho_letra_fechar = 17
 
+        
+        # Area dos Botoes de acao
         adicionar_button : CTkButton = CTkButton(self, text="Novo Cadastro", fg_color="#ccc", text_color="BLACK", corner_radius=0, font=("arial", tamanho_letra, "bold"), height=40, hover_color="#ccc",
         command=self.adicionar, border_width=2,  border_color="#888")
         remover_button : CTkButton = CTkButton(self, text="Excluir Cadastro", fg_color="#ccc", text_color="BLACK", corner_radius=0, font=("arial", tamanho_letra, "bold"), height=40, hover_color="#ccc",
@@ -70,6 +72,25 @@ class Janela(CTk):
         sair_button.place(relx=0.93, rely=.02, relwidth=.05)
 
 
+        # Area de pesquisa
+        pesquisaE : CTkEntry = CTkEntry(self, font=("arial", tamanho_letra + 5, "bold"), corner_radius=0, bg_color="#ccc")
+        pesquisa_button : CTkButton = CTkButton(self, text="Buscar", fg_color="#ccc", text_color="BLACK", corner_radius=0, font=("arial", tamanho_letra, "bold"), height=40, hover_color="#ccc", command=lambda: self.pesquisa(valor=pesquisaE.get(), opcao=opcoes_CB.get()), border_width=2,  border_color="#888")
+
+
+        opcoes : list = ["ID", "Nome", "Email"]
+        opcoes_CB : CTkComboBox = CTkComboBox(self, values=opcoes, fg_color="#ccc", border_color="#888", bg_color="#aaa",
+                                              text_color="BLACK", button_color="#888")
+
+        pesquisaE.bind("<Return>", lambda e: self.pesquisa(valor=pesquisaE.get(), opcao=opcoes_CB.get()))
+
+        pesquisa_button.bind("<Enter>", lambda e: self.enter_mouse(button=pesquisa_button))
+        pesquisa_button.bind("<Leave>", lambda e: self.leave_mouse(button=pesquisa_button))
+
+        pesquisaE.place(relx=.42, rely=.02, relwidth=.16, relheight=.0375)
+        pesquisa_button.place(relx=.582, rely=.02, relwidth=.05)
+        opcoes_CB.place(relx=.64, rely=.025, relheight=.03, relwidth=.07)
+
+
     def run(self):
         self.mainloop()
 
@@ -90,7 +111,7 @@ class Janela(CTk):
         janela_novo_cadastro : CadastroCliente = CadastroCliente(self, fun_atualizar_tabela=self.atualizar_tabela_clientes)
 
     
-    def editar(self):
+    def editar(self, e=None):
         selecionado = self.tabela_clientes.selection()
         if not selecionado:
             msg.showinfo("Error", "Nenhum cadastro selecionado")
@@ -136,9 +157,21 @@ class Janela(CTk):
 
     def atualizar_tabela_clientes(self):
         self.tabela_clientes.place_forget()
-        self.tabela_clientes : ClientesView = ClientesView(self)
+        self.tabela_clientes : ClientesView = ClientesView(self, fun_duplo_clique=self.editar)
 
     
+    def pesquisa(self, valor : str, opcao, e=None):
+        self.tabela_clientes.place_forget()
+
+        match opcao.lower():
+            case "id":
+                self.tabela_clientes : ClientesView = ClientesView(self, fun_duplo_clique=self.editar, filter= True, id=int(valor))
+            case "nome":
+                self.tabela_clientes : ClientesView = ClientesView(self, fun_duplo_clique=self.editar, filter= True, nome=valor.strip())
+            case "email":
+                self.tabela_clientes : ClientesView = ClientesView(self, fun_duplo_clique=self.editar, filter= True, email=valor.strip())
+
+
     def fechar(self):
         self.destroy()
 

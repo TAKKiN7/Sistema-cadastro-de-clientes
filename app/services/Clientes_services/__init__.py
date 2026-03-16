@@ -28,8 +28,8 @@ class ClienteServices:
 
     
     def buscar_cliente_email(self, email):
-        return self.banco.buscar_cliente_email(email)
-    
+        return self.banco.buscar_cliente_email(email=email)    
+
     def buscar_cliente_nome(self, nome):
         return self.banco.buscar_cliente_nome(nome)
     

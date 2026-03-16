@@ -1,11 +1,12 @@
 from tkinter.ttk import Treeview, Style
 from app.services.Clientes_services import ClienteServices
-
+from tkinter import messagebox as msg
 
 class ClientesView(Treeview):
-    def __init__(self, master, filter : bool = False, nome : str = None, id : int = None, email : str = None):
+    def __init__(self, master, fun_duplo_clique = None, filter : bool = False, nome : str = None, id : int = None, email : str = None):
         super().__init__(master)
         self.cliente_services : ClienteServices = ClienteServices()
+        self.duplo_clique = fun_duplo_clique
         self.nome = nome.title() if nome else None
         self.id = id
         self.email = email.lower() if email else None
@@ -41,13 +42,16 @@ class ClientesView(Treeview):
         if not self.filter:
             self.inserir_clientes()
         elif self.nome:
+            print("TO NO nome")
             self.inserir_clientes_nome(self.nome)
         elif self.id:
+            print("TO NO ID")
             self.inserir_clientes_id(self.id)
         elif self.email:
+            print("TO NO email")
             self.inserir_clientes_email(self.email)
 
-
+        self.bind("<Double-1>", self.duplo_clique)
         self.place(relx=.02, rely=0.07, relheight=.9, relwidth=.96) 
 
 
@@ -79,6 +83,7 @@ class ClientesView(Treeview):
     def inserir_clientes_nome(self, nome : str):
         clientes = self.cliente_services.buscar_cliente_nome(nome=nome)
         if not clientes:
+            msg.showinfo("","Nenhum cadastro encontrado")
             return
         for i, cliente in enumerate(clientes):
             #cliente : dict = dict(c)
@@ -102,6 +107,7 @@ class ClientesView(Treeview):
     def inserir_clientes_id(self, id : int):
         cliente = self.cliente_services.buscar_cliente(id=id)
         if not cliente:
+            msg.showinfo("","Nenhum cadastro encontrado")
             return
         
         id = cliente.id
@@ -116,9 +122,9 @@ class ClientesView(Treeview):
 
 
     def inserir_clientes_email(self, email : str):
-        res  : dict = self.cliente_services.buscar_cliente_email(email=email)
+        res = self.cliente_services.buscar_cliente_email(email)
         if not res:
-            print("Cliente email nao encontrado")
+            msg.showinfo("","Nenhum cadastro encontrado")
             return
         
         cliente : dict = dict(res)

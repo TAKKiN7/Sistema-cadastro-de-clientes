@@ -25,7 +25,7 @@ class Banco:
     
 
     def cadastrar_cliente(self, cliente : Cliente):    
-        data : tuple = (cliente.nome, cliente.telefone, cliente.email, cliente.endereco, cliente.status)
+        data : tuple = (cliente.nome, cliente.telefone, cliente.email.lower(), cliente.endereco, cliente.status)
         with self.banco_conn() as conn:
             cursor : sqlite3.Cursor = conn.cursor()
             cursor.execute("INSERT INTO clientes (nome, telefone, email, endereco, status) VALUES (?, ?, ?, ?, ?)", data)
@@ -137,3 +137,5 @@ class Banco:
 
 if __name__ == "__main__":
     banco : Banco = Banco()
+    res = banco.buscar_cliente_email(email="AnaSouza@gmail.com")
+    print(res)

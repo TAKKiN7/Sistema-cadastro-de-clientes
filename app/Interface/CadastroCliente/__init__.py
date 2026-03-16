@@ -99,7 +99,7 @@ class CadastroCliente(CTkToplevel):
         if not dados:
             return
     
-        cliente : Cliente = Cliente(dados.get("nome"), dados.get("telefone"), dados.get("email"), dados.get("endereco"))      
+        cliente : Cliente = Cliente(dados.get("nome"), dados.get("telefone"), dados.get("email").lower(), dados.get("endereco"))      
         
         self.service_cliente.cadastrar_cliente(cliente=cliente)
         
